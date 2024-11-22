@@ -12,7 +12,7 @@ const app = express();
 
 const port = 3000;
 const publicRoutes = ['/login', '/register']; //例外路由 
-const usersFilePath = path.join(__dirname, "public/jsons/userdata.json");
+const usersFilePath = path.join(__dirname, "public/jsons/userdata.json"); //模擬資料庫
 
 // jwt密鑰
 const SECRET_KEY = 'this_a_secret_key';
@@ -39,15 +39,18 @@ app.get('/', (req, res) => {
 
 
 app.get('/login', (req, res) => {
-  res.render('login_panel', {title: 'login | My restaurant List' , extraCSS: "login.css", extraJS: "login.js"});
+  res.render('login_panel', {title: 'login | My restaurant List', extraCSS: "login.css", extraJS: "login.js"});
+})
+
+app.get('/register', (req, res) => {
+  res.render('register', {title: 'register | My restaurant List', extraCSS: 'register.css', extraJS: 'register.js' })
 })
 
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
   const users = readUser(); //現有全部使用者名單
-  const user = users.find(u => u.username === username && u.password === password);
 
-  if (!user) {
+  if (!users.find(u => u.username === username)) {
     return res.status(401).json({ success: false, message: "帳號或密碼錯誤" });
   }
 
@@ -67,6 +70,15 @@ app.post('/login', async (req, res) => {
   })
 
   res.status(200).json({success: true, message: '登入成功'});
+})
+
+app.post('/register', (req, res) => {
+  const {username, password} = req.body;
+  const users = readUser();
+
+  if(users.find(u => u.username === username)) {
+    res.status(400),json({})
+  }
 })
 
 app.get('/restaurantlist', (req, res) => {
