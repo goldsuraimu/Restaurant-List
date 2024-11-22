@@ -11,7 +11,7 @@
   color: #f8f9fa;
 }
 
-.login-panel {
+#login-panel {
   background-color: #0b1320;
   display: flex;
   flex-direction: column;
@@ -23,7 +23,7 @@
   box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.8);
 }
 
-.login-panel input, button {
+#login-panel input, button {
   background: none;
   color: #f8f9fa;
   padding: 3px;
