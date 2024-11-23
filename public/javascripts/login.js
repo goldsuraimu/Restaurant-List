@@ -15,7 +15,7 @@ loginPanel.addEventListener('submit', async function accountSubmit(e){
       method: 'POST',
       headers: { 'Content-type': 'application/json' },
       body: JSON.stringify({ username, password }),
-      credentials: 'include',
+      credentials: 'include'
     });
 
     const data = await response.json();
