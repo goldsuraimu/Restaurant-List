@@ -1,4 +1,3 @@
-const SERVER_BASE_URL = 'http://localhost:3000';
 const registerPanel = document.querySelector('#register-panel');
 
 registerPanel.addEventListener('submit', async (e) => {
@@ -8,7 +7,7 @@ registerPanel.addEventListener('submit', async (e) => {
   const password = document.querySelector('#password').value;
   
   try {
-    const response = await fetch(`${SERVER_BASE_URL}/register`, {
+    const response = await fetch('/register', {
       method: 'POST',
       headers: { 'Content-type': 'application/json' },
       body: JSON.stringify({ username, password }),

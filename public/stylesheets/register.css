@@ -45,6 +45,18 @@
   width: 100%;
 }
 
+.login-btn-contain {
+  display: flex;
+  max-width: 400px;
+  width: 100%;
+  justify-content: right;
+}
+
+.login-btn {
+  color: #f8f9fa;
+  margin: 15px 0 0 0;
+}
+
 .register input[type='text']:focus, input[type='password']:focus {
   border: solid 2px #2ecc71;
   max-width: 200px;
@@ -54,4 +66,8 @@
 
 .register button[type='submit']:hover {
   background-color: #2ecc71;
+}
+
+.login-btn:hover {
+  color: #2ecc71;
 }

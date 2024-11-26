@@ -44,10 +44,11 @@ app.get('/login', (req, res) => {
     return res.render('login_panel', { title: 'login | My restaurant List', extraCSS: "login.css", extraJS: "login.js" });
   }
   res.redirect('/restaurantlist');
+  
 })
 
 app.get('/register', (req, res) => {
-  res.render('register', {title: 'register | My restaurant List', extraCSS: 'register.css', extraJS: 'register.js' })
+  res.render('register', {title: 'register | My restaurant List', extraCSS: 'register.css', extraJS: 'register.js' });
 })
 
 app.post('/login', async (req, res) => {
@@ -55,17 +56,21 @@ app.post('/login', async (req, res) => {
   const users = readUser(); //現有全部使用者名單
   const user = users.find(u => u.username === username);
 
+  if(!username || !password) {
+    return res.status(401).json({ success: false, message: "請輸入帳號或密碼!" })
+  }
+
   if (!user) {
-    return res.status(401).json({ success: false, message: "帳號或密碼錯誤" });
+    return res.status(401).json({ success: false, message: "帳號或密碼錯誤!" });
   }
 
   //密碼驗證
   const isVaiildPassword = await bcrypt.compare(password, user.password);
   if(!isVaiildPassword) {
-    return res.status(401).json({ success: false, message: "帳號或密碼錯誤" });
+    return res.status(401).json({ success: false, message: "帳號或密碼錯誤!" });
   }
 
-  const token = jwt.sign({username: users.username}, SECRET_KEY, {expiresIn: TOKEN_EXPIRATION});
+  const token = jwt.sign({id: user.id }, SECRET_KEY, {expiresIn: TOKEN_EXPIRATION});
   
   res.cookie('token', token, {
     httpOnly: true,  //防止XSS
@@ -77,9 +82,18 @@ app.post('/login', async (req, res) => {
   res.status(200).json({success: true, message: '登入成功'});
 })
 
+app.post('/logout', (req, res) => {
+  res.clearCookie('token'); //清除tokken
+  res.status(200).json({message: '登出成功' });
+})
+
 app.post('/register', async (req, res) => {
   const {username, password} = req.body;
   const users = readUser();
+
+  if(!username || !password) {
+    return res.status(401).json({ success: false, message: "帳號或密碼未填!" })
+  }
 
   if(users.some(u => u.username === username)) {
     return res.status(400).json({success: false, message: '此帳號已被註冊!'})
@@ -87,7 +101,7 @@ app.post('/register', async (req, res) => {
   // 密碼加密
   const hashedPassword = await bcrypt.hash(password, 10);
 
-    users.push({username, password: hashedPassword});
+    users.push({id: users.length + 1, username, password: hashedPassword});
     writeUser(users);
     res.status(200).json({success: true, message: '註冊成功'})
 })
@@ -135,13 +149,13 @@ function AuthenticateToken(req, res, next){
     return next();
   }
 
-  // 驗證token
+  
   const token = req.cookies.token;
 
   if (!token) {
     return res.redirect('/login');
   }
-
+  // 驗證token
   jwt.verify(token, SECRET_KEY, (err, user) => {
     if(err) {
       return res.status(401).json({message: '登入憑證無效!'});

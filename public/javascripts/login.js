@@ -1,4 +1,3 @@
-const SERVER_BASE_URL = 'http://localhost:3000';
 const loginPanel = document.querySelector('#login-panel');
 
 
@@ -11,7 +10,7 @@ loginPanel.addEventListener('submit', async function accountSubmit(e){
 
 
   try {
-    const response = await fetch(`${SERVER_BASE_URL}/login`, {
+    const response = await fetch('/login', {
       method: 'POST',
       headers: { 'Content-type': 'application/json' },
       body: JSON.stringify({ username, password }),
