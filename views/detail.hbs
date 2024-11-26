@@ -7,7 +7,15 @@
           width="30" height="30" class="d-inline-block align-top" alt="好。吃">
         我的餐廳清單
       </a>
-      <i class="fa-solid fa-right-from-bracket"></i>
+      <div class="dropdown">
+        <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          <i class="fa-regular fa-address-card fa-xl"></i> {{username}}
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <li id="logout-btn"><a class="dropdown-item" href="#">登出<i class="fa-solid fa-right-from-bracket"></i></a></li>
+        </ul>
+      </div>
     </div>
   </nav>
 

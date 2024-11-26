@@ -53,8 +53,7 @@ app.get('/register', (req, res) => {
 
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
-  const users = readUser(); //現有全部使用者名單
-  const user = users.find(u => u.username === username);
+  const user = findUser('username', username);
 
   if(!username || !password) {
     return res.status(401).json({ success: false, message: "請輸入帳號或密碼!" })
@@ -114,14 +113,15 @@ app.get('/restaurantlist', (req, res) => {
         return property.toLowerCase().includes(keyword.toLowerCase());
       }
     })
-) : restaurants;  
-  res.render('index', {title: 'My Restaurant List',restaurants: matchedResta, keyword});
+  ) : restaurants;  
+
+  res.render('index', { title: 'My Restaurant List', restaurants: matchedResta, keyword, username: req.userDetails.username });
 })
 
 app.get('/restaurants/:id', (req, res) => {
   const id = req.params.id;
   const restaurant = restaurants.find((restaurant) => restaurant.id === Number(id))
-  res.render('detail', { title: `${restaurant.name} | My Restaurant List`,restaurant });
+  res.render('detail', { title: `${restaurant.name} | My Restaurant List`, restaurant, username: req.userDetails.username });
 })
 
 app.listen(port, (req, res) => {
@@ -142,6 +142,12 @@ function writeUser(user) {
   fs.writeFileSync(usersFilePath, JSON.stringify(user,null,2));
 }
 
+// 尋找使用者
+function findUser(userKey, userValue) {
+  const users = readUser();
+  return users.find(u => u[userKey] === userValue);
+}
+
 //驗證token
 function AuthenticateToken(req, res, next){
   // 檢查是否為例外路由
@@ -149,7 +155,6 @@ function AuthenticateToken(req, res, next){
     return next();
   }
 
-  
   const token = req.cookies.token;
 
   if (!token) {
@@ -160,7 +165,7 @@ function AuthenticateToken(req, res, next){
     if(err) {
       return res.status(401).json({message: '登入憑證無效!'});
     }
-    req.user = user;
+    req.userDetails = findUser('id', user.id);
     next();
   })
 }
