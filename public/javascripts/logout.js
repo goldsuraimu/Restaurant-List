@@ -1,7 +1,7 @@
-const logoutBtn = document.querySelector('#logout-btn');
+const logoutBtn = document.querySelector('#logout-btn')
 
 logoutBtn.addEventListener('click', async (e) => {
-  e.preventDefault();
+  e.preventDefault()
 
   try {
     const response = await fetch('/logout', {
@@ -9,11 +9,11 @@ logoutBtn.addEventListener('click', async (e) => {
       credentials: 'include'
     })
 
-    const data = await response.json();
+    const data = await response.json()
     alert(`${data.message}`)
-    window.location.href = '/login';
-  } catch(err) {
-    console.log('錯誤:', err);
-    alert('發生錯誤，請稍後再試!');
+    window.location.href = '/login'
+  } catch (err) {
+    console.log('錯誤:', err)
+    alert('發生錯誤，請稍後再試!')
   }
 })
