@@ -33,6 +33,7 @@ npm install
 ```
 npm run start
 ```
+啟動完成，請至[http://localhost:3000](http://localhost:3000)開始使用程式
 
 ## 帳戶
 
