@@ -19,7 +19,7 @@ git clone https://github.com/goldsuraimu/Restaurant-List.git
 2.移動到該資料夾
 
 ```
-cd RestaurantList
+cd Restaurant-List
 ```
 
 3.安裝相關套件
