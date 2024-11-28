@@ -115,8 +115,9 @@ app.get('/restaurantlist', (req, res) => {
     })
     )
     : restaurants
-
-  res.render('index', { title: 'My Restaurant List', restaurants: matchedResta, keyword, username: req.userDetails.username })
+  matchedResta.length === 0 
+    ? res.render('no_result', { title: 'My Restaurant List', restaurants: matchedResta, extraCSS: 'no_result.css', keyword, username: req. userDetails.username })
+    : res.render('index', { title: 'My Restaurant List', restaurants: matchedResta, keyword, username: req.userDetails.username })
 })
 
 app.get('/restaurants/:id', (req, res) => {

@@ -1,0 +1,9 @@
+.no-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.suggestion {
+  font-size: 20px;
+}
